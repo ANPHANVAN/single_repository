@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    <form action="/quote" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="symbol" placeholder="Symbol" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Quote</button>
+    </form>
+
+    {% if infos['longname'] != 'N/A' %}
+        <p>A share of {{ infos.longname }} ({{ looksymbol }})</p>
+        <p>Cost: {{ infos.currentPrice | usd }}</p>
+    {% endif %}
+
+    <h1>Some Symbol</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Long Name</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for symbol, info in infos_top7.items() %}
+            <tr>
+                <td>{{ symbol }}</td>
+                <td>{{ info.longname }}</td>
+                <td>{{ usd(info.currentPrice) }}</td>  
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

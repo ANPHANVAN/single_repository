@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+
+    <table>
+        <thead>
+            <th>Time</th>
+            <th>Symbol</th>
+            <th>Shares</th>
+            <th>Price</th>
+            <th>TOTAL</th>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    <td>{{ row.timestamp }}</td>
+                    <td>{{ row.symbol }}</td>
+                    <td>{{ row.shares }}</td>
+                    <td>{{ usd(+row.price) }}</td>
+                    <td>{{ usd(-row.total) }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

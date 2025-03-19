@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    
+
+
+    <form action="/sell" method="post">
+        <select name="symbol" id="symbol_sell">
+            {% for symbol_difference in symbol_differences %}
+                <option value="{{ symbol_difference.symbol }}">{{ symbol_difference.symbol }}</option>
+            {% endfor %}
+        </select>
+
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="shares" placeholder="Shares" type="number" min="1">
+        </div>
+        <button class="btn btn-primary" type="submit">Sell</button>
+    </form>
+
+    <br><br><br>
+    <table>
+        <thead>
+            <th>Symbol</th>
+            <th>Shares</th>
+        </thead>
+        <tbody>
+            {% for row in datas %}
+            <tr>
+                <td>{{ row.symbol }}</td>
+                <td>{{ row.sum_shares }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

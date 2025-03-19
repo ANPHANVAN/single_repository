@@ -1,0 +1,62 @@
+/* Size for brand */
+nav .navbar-brand
+{
+    font-size: xx-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .blue
+{
+    color: #537fbe;
+}
+nav .navbar-brand .red
+{
+    color: #ea433b;
+}
+nav .navbar-brand .yellow
+{
+    color: #f5b82e;
+}
+nav .navbar-brand .green
+{
+    color: #2e944b;
+}
+table {
+    width: 100%; 
+    border-collapse: collapse; 
+}
+
+thead tr {
+    background-color: rgb(173, 207, 229);
+}
+
+tfoot tr {
+    background-color: rgb(241, 197, 171);
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #deedf3; /* Màu nền cho hàng chẵn */
+}
+
+tbody tr:nth-child(even) {
+    background-color: white; /* Màu nền cho hàng lẻ (hoặc để mặc định) */
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2; /* Màu nền cho header */
+}
+
+.bold {
+    font-weight: bold;
+}
+
+form select {
+    margin: 14px;
+    padding: 6px;
+    border-radius: 8px;
+}

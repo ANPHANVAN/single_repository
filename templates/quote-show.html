@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    {% if infos['longname'] != 'N/A' %}
+        <p>A share of {{ infos.longname }} ({{ looksymbol }})</p>
+        <p>Cost: {{ infos.currentPrice | usd }}</p>
+    {% else %}
+        <p>Invalid symbol or no data available for {{ looksymbol }}</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+
+    <table>
+        <thead>
+            <th>Symbol</th>
+            <th>Shares</th>
+            <th>Price</th>
+            <th>TOTAL</th>
+        </thead>
+        <tbody>
+            {% for row in datas %}
+            <tr>
+                <td>{{ row.symbol }}</td>
+                <td>{{ row.sum_shares }}</td>
+                <td>{{ usd(row.price) }}</td>  
+                <td>{{ usd(row.total) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="bold">Cash</td>
+                <td>{{ usd(cash) }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="bold">TOTAL</td>
+                <td>{{ usd(total) }}</td>
+            </tr>
+        </tfoot>
+    </table>
+    
+
+{% endblock %}
