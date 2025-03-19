@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Transaction
+{% endblock %}
+
+{% block main %}
+<div class="containerdiv">
+    <h1>Your cash: {{ cash }} $</h1>
+</div>
+
+<div class="containerdiv">
+    <h2><span>Expensive: </span><span>{{ sum_transactions }}</span></h2>
+
+    <form action="/filter" method="post">
+        <span class="display_phone">sort by</span>
+        <select name="sort" id="sort">
+            <option value="amount">Amount</option>
+            <option value="catalogies">Category</option>
+            <option value="date">Date</option>
+            <option value="description">Description</option>
+        </select>
+
+        <select name="desc" id="desc">
+            <option value="1">Ascending</option>
+            <option value="0">Descending</option>
+        </select>
+
+        <span class="display_phone">range time</span>
+        <select name="range_top" id="range_top" type="button">
+            <option value="full">Full</option>
+            <option value="day">Day</option>
+            <option value="week">Week</option>
+            <option value="month">Month</option>
+            <option value="year">Year</option>
+        </select>
+        <button type="submit" name="filter">Filter</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in df_expense_dict %}
+            <tr>
+                <td>{{ expense.amount }}</td>
+                <td>{{ expense.catalogies }}</td>
+                <td>{{ expense.date }}</td>
+                <td>{{ expense.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="containerdiv">
+    <h2><span>Income: </span><span>{{ sum_income }}</span></h2>
+
+    <form action="/filter" method="post">
+        <span class="display_phone">sort by</span>
+        <select name="sort" id="sort">
+            <option value="amount">Amount</option>
+            <option value="catalogies">Category</option>
+            <option value="date">Date</option>
+            <option value="description">Description</option>
+        </select>
+
+        <select name="desc" id="desc">
+            <option value="1">Ascending</option>
+            <option value="0">Descending</option>
+        </select>
+
+        <span class="display_phone">range time</span>
+        <select name="range_top" id="range_top" type="button">
+            <option value="full">Full</option>
+            <option value="day">Day</option>
+            <option value="week">Week</option>
+            <option value="month">Month</option>
+            <option value="year">Year</option>
+        </select>
+        <button type="submit" name="filter_income">Filter</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for income in df_income_dict %}
+            <tr>
+                <td>{{ income.amount }}</td>
+                <td>{{ income.catalogies }}</td>
+                <td>{{ income.date }}</td>
+                <td>{{ income.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+
+
+{% endblock %}

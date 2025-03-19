@@ -1,0 +1,173 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block css %}
+<script src="static/home.css"></script>
+{% endblock %}
+
+{% block main %}
+<div class="containerdiv" id="mycash">
+    <h1>Your cash: {{ cash }} $</h1>
+</div>
+
+<div class="containerdiv" id="trendingReport">
+    <h2>Trending report</h2>
+    <h3><span>total expense:</span><span>{{ sum_expense }} $</span></h3>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+</div>    
+    
+<div class="containerdiv" id="trendingSalart">
+    <h3><span>total income:</span><span>{{ sum_salary }} $</span></h3>
+    <div>
+        <canvas id="salarychart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Chuyển dữ liệu từ Flask vào JavaScript
+    let data = JSON.parse('{{ data | safe }}');
+
+    // Tách cột "date" và "amount"
+    let labels = data.map(item => item.date);  // Danh sách ngày
+    let amounts = data.map(item => item.amount);  // Danh sách số tiền
+
+    // Cấu hình biểu $ồ
+    let ctx = document.getElementById("myChart").getContext("2d");
+    let myChart = new Chart(ctx, {
+        type: "line", // Thay $ổi thành "bar" nếu muốn biểu $ồ cột
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Expense ($)",
+                data: amounts,
+                borderColor: "blue",
+                backgroundColor: "rgba(0, 0, 255, 0.2)",
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { title: { display: true, text: "Date" } },
+                y: { title: { display: true, text: "Expense ($)" }, beginAtZero: true }
+            }
+        }
+    });
+
+    // Chuyển dữ liệu từ Flask vào JavaScript
+    let data_salary = JSON.parse('{{ data_salary | safe }}');
+
+    // Tách cột "date" và "amount"
+    let labels_salary = data_salary.map(item => item.date);  // Danh sách ngày
+    let amounts_salary = data_salary.map(item => item.amount);  // Danh sách số tiền
+
+    // Cấu hình biểu $ồ
+    let salary = document.getElementById("salarychart").getContext("2d");
+
+    let salarychart = new Chart(salary, {
+        type: "line", // Thay $ổi thành "bar" nếu muốn biểu $ồ cột
+        data: {
+            labels: labels_salary,
+            datasets: [{
+                label: "Income ($)",
+                data: amounts_salary,
+                borderColor: "blue",
+                backgroundColor: "rgba(0, 0, 255, 0.2)",
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { title: { display: true, text: "Date" } },
+                y: { title: { display: true, text: "Income ($)" }, beginAtZero: true }
+            }
+        }
+    });
+</script>
+
+
+<!-- spending report -->
+<div class="containerdiv" id="spendingReport">
+    <h2>Spending report</h2>
+    <div>
+        <form action="/" method="post">
+            <button type="submit" name="range_spending" value="day">Day</button>
+            <button type="submit" name="range_spending" value="week">Week</button>
+            <button type="submit" name="range_spending" value="month">Month</button>
+            <button type="submit" name="range_spending" value="year">Year</button>
+        </form>
+    </div>
+    
+    <div>
+        <h3 id="total_expense">Number</h3>
+        <p id="describe">Total spent this month</p>
+    </div>
+
+    <div id="chart">
+        <canvas id="spendingChart"></canvas>
+    </div>
+</div>
+
+
+
+<script>
+    // Chuyển dữ liệu từ Flask vào JavaScript
+    let df_json_expense_group = JSON.parse('{{ df_json_expense_group | safe }}');
+
+    if (df_json_expense_group.length > 0) {
+    // Get all column names from the first object in the array
+    let columnNames = Object.keys(df_json_expense_group[0]);
+    
+    // Get the second column name (index 1)
+    let firstColumnName = columnNames[0];
+
+    // Create labels using the second column name
+    let labels3 = df_json_expense_group.map(item => item[firstColumnName]);
+
+    // Tách cột "date" và "amount"
+    let amounts3 = df_json_expense_group.map(item => item.amount);  // Danh sách số tiền
+
+    // Cấu hình biểu $ồ
+    let expense = document.getElementById("spendingChart").getContext("2d");
+
+    const stackedBar = new Chart(expense, {
+        type: 'bar',
+        data: {
+            labels: labels3,
+            datasets: [{
+                label: "Amount ($)",
+                data: amounts3,
+                borderColor: "blue",
+                backgroundColor: "rgba(0, 0, 255, 0.2)",
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    stacked: true
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        }
+    });     
+    
+}
+</script>
+<!-- <script src="/static/home.js"></script> -->
+
+
+{% endblock %}

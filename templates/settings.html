@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Settings
+{% endblock %}
+
+{% block main %}
+<div class="containerdiv">
+    <h1>Change category</h1>
+</div>
+
+<div class="containerdiv">
+    <h3>Change your category income</h3>
+    <!-- div change category income -->
+    <div name = "category_income">
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Function</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+                <form action="/settings" method="post">
+                    {% for category in categories_salary %}
+                    <tr>
+                        <td>{{ category.name }}</td>
+                        <td>
+                            <form action="/settings" method="post">
+                                <input type="hidden" name="input_delete_salary" value="{{ category.name }}">
+                                <button name="delete_salary" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </form>
+                
+                <tr>
+                    <form action="/settings" method="post" >
+                        <td><input name="add_category" type="text" autocomplete="off" placeholder="Category salary name"></td>
+                        <td><button type="submit" name="add_category_salary">Add category</button></td>
+                    </form>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="containerdiv">
+    <h3>Change your category expensive</h3>
+    <div name="category_expensive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Function</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <form action="/settings" method="post">
+                    {% for category in categories %}
+                    <tr>
+                        <td>{{ category.name }}</td>
+                        <td>
+                            <form action="/settings" method="post">
+                                <input type="hidden" name="input_delete_cost" value="{{ category.name }}">
+                                <button name="delete_cost" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </form>
+
+
+                <tr>
+                    <form action="/settings" method="post" >
+                        <td><input name="add_category" type="text" autocomplete="off" placeholder="Category expense name"></td>
+                        <td><button type="submit" name="add_category_expense">Add category</button></td>
+                    </form>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

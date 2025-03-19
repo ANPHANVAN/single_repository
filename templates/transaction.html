@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Transaction
+{% endblock %}
+
+{% block main %}
+
+<div class="containerdiv">
+    <h1>Your cash: {{ cash }} $</h1>
+</div>
+<div class="containerdiv">
+    <div id="time_range">
+        <div>
+            <h2 id="time_range_h2">Time range</h2>
+        </div>
+        <div>
+            <form action="/transactions" method="post">
+                <div class="input-container">
+                    <label for="start_date">Start day</label>
+                    <input type="date" id="start_date" name="start_date">
+                </div>
+            
+                <div class="input-container">
+                    <label for="end_date">End day</label>
+                    <input type="date" id="end_date" name="end_date">
+                </div>
+            
+                <button type="submit" name="time_range">Filter</button>
+            </form>
+        </div>
+        <!-- 2 buuton send to post set your time range -->
+    </div>
+</div>
+<div class="containerdiv">
+    <h2><span>Total expense: </span><span>{{ sum_transactions }} $</span></h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.catalogies }}</td>
+                <td>{{ transaction.date }}</td>
+                <td>{{ transaction.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="containerdiv">
+
+    <h2><span>Total income: </span><span>{{ sum_income }} $</span></h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for income in incomes %}
+            <tr>
+                <td>{{ income.amount }}</td>
+                <td>{{ income.catalogies }}</td>
+                <td>{{ income.date }}</td>
+                <td>{{ income.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
