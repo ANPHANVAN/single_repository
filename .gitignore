@@ -1,0 +1,14 @@
+
+# vscode and system
+*.vscode/
+*.conda/
+
+# flask python
+*.venv/
+*venv
+*__pycache__/
+*flask_session/
+
+# nodejs enviroment
+*.json_server/
+*node_modules/
