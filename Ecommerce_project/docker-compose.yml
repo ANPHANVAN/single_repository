@@ -1,0 +1,10 @@
+services:
+  java:
+    build: .
+    # command: ["mvn", "exec:java"]
+    volumes:
+      - .:/app
+    container_name: java_app
+    working_dir: /app
+    mem_limit: 512m
+    tty: true 
