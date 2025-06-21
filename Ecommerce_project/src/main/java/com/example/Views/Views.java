@@ -7,16 +7,16 @@ import java.util.Scanner;
 import java.util.Optional;
 import java.time.format.DateTimeFormatter;
 
-class Views {
+class Views extends ViewFather{
 
-    private Ecommerce ecommerce;
-    public void setEcommerce(Ecommerce ecommerce){ this.ecommerce = ecommerce; }
-    public Ecommerce getEcommerce(){ return this.ecommerce; }
+    // private Ecommerce ecommerce;
+    // public void setEcommerce(Ecommerce ecommerce){ this.ecommerce = ecommerce; }
+    // public Ecommerce getEcommerce(){ return this.ecommerce; }
 
     public void displayFirstChoose() {
         System.out.println("--------------------------------------------------------------------------------------------");
         System.out.println("---------------------------------------Trang Đầu App----------------------------------------");
-        System.out.println("1. Đăng ký\n2. Đăng nhập\n3. Thoát");
+        System.out.println("1. Đăng ký\n2. Đăng nhập\n3. Thoát Ứng Dụng");
     }
 
     public void register() {
@@ -62,7 +62,7 @@ class Views {
         System.out.println("--------------------------------------------------------------------------------------------");
         System.out.println("-------------------------------------- Trang Chủ Admin -------------------------------------");
         System.out.println("1. Tạo Sản Phẩm\n2. Xem Tất Cả Sản Phẩm\n"+
-        "3. Xem Lịch Sử Tất Cả Đơn Hàng\n4. Về Trang Khởi Động");
+        "3. Xem Lịch Sử Tất Cả Đơn Hàng\n4. Về Trang Khởi Động\n5. Thay Đổi Thông Tin Sản Phẩm");
     }
 
     
@@ -71,7 +71,7 @@ class Views {
 
         public void firstViewCreateProduct() {
             System.out.println("--------------------------------------------------------------------------------------------");
-            System.out.println("------------------------------------ Trang Tạo Sản Phẩm ----------------------------------------");
+            System.out.println("------------------------------------ Trang Tạo Sản Phẩm ------------------------------------");
             System.out.println("Nhập Tên Sản Phẩm (VD: Xoài Tươi)");
         }
 

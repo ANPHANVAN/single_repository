@@ -12,38 +12,47 @@ import java.util.Scanner;
 import java.util.Optional;
 
 
-class Controllers {
+public class Controllers extends ControllerFather {
     final private int ADMIN_PASSWORD = 8888;
 
     public Controllers(){}
 
-    private Ecommerce ecommerce;
-    public void setEcommerce(Ecommerce ecommerce){ this.ecommerce = ecommerce; }
-    public Ecommerce getEcommerce(){ return this.ecommerce; }
-
-
+    // private Ecommerce ecommerce;
+    // public void setEcommerce(Ecommerce ecommerce){ this.ecommerce = ecommerce; }
+    // public Ecommerce getEcommerce(){ return this.ecommerce; }
 
     /* All User : display option first page
      * choose register user, login, exit or go to admin page
      */
     public void chooseFirstChoose() {
-        this.getEcommerce().getViews().displayFirstChoose();
-        int chooseFirstChoose = this.getEcommerce().getScanner().nextInt();
-        this.getEcommerce().getScanner().nextLine();
-        switch (chooseFirstChoose) {
-            case 1:
-                this.getEcommerce().getControllers().registerUsername();
-                break;
-            case 2:
-                this.getEcommerce().getControllers().loginController();
-                break;
-            case 3:
-                System.out.println("Exiting program...");
-                break;
-            case 8888:
-                this.getEcommerce().getControllers().adminHomeController();
-            default:
-                System.out.println("Invalid choice, please try again.");
+        boolean running = true;
+        while (running) {
+            this.getEcommerce().getViews().displayFirstChoose();
+            String chooseFirstChoose = this.getEcommerce().getScanner().nextLine();
+            switch (chooseFirstChoose) {
+                case "1":
+                    running = false;
+                    this.getEcommerce().getControllers().registerUsername();
+                    break;
+                case "2":
+                    running = false;
+                    this.getEcommerce().getControllers().loginController();
+                    break;
+                case "3":
+                    running = false;
+                    Excel excel = new Excel();
+                    excel.writeEcommerceToExcel(this.getEcommerce());
+
+                    System.out.println("Exiting program...");
+                    System.exit(0);
+                    break;
+                case "8888":
+                    running = false;
+                    this.getEcommerce().getControllers().adminHomeController();
+                    break;
+                default:
+                    System.out.println("Invalid choice, please try again.");
+            }            
         }
     }
 
@@ -62,26 +71,39 @@ class Controllers {
      * user type choose option
      */
     public void adminHomeController(){
-        this.getEcommerce().getViews().adminHome();
-        int adminChoose = this.getEcommerce().getScanner().nextInt();
-        this.getEcommerce().getScanner().nextLine();
-        switch (adminChoose) {
-            case 1:
-                // create product
-                this.getEcommerce().getControllers().createProduct();
-                break;
-            case 2:
-                // see All Product
-                this.getEcommerce().getControllers().allProductController();
-                break;
-            case 3:
-                // history order
-                this.getEcommerce().getControllers().historyOrderAdmin();
-                break;
-            case 4:
-                // go first page app
-                this.getEcommerce().getControllers().chooseFirstChoose();
-                break;
+        boolean running = true;
+        while(running) {
+            this.getEcommerce().getViews().adminHome();
+            String adminChoose = this.getEcommerce().getScanner().nextLine();
+            switch (adminChoose) {
+                case "1":
+                    running = false;
+                    // create product
+                    this.getEcommerce().getControllers().createProduct();
+                    break;
+                case "2":
+                    running = false;
+                    // see All Product
+                    this.getEcommerce().getControllers().allProductController();
+                    break;
+                case "3":
+                    running = false;
+                    // history order
+                    this.getEcommerce().getControllers().historyOrderAdmin();
+                    break;
+                case "4":
+                    running = false;
+                    // go first page app
+                    this.getEcommerce().getControllers().chooseFirstChoose();
+                    break;
+                case "5":
+                    running = false;
+                    this.getEcommerce().getAdminControllers().chooseProductDetailToAction();
+                    break;
+                default:
+                    System.out.println("Invalid choice, please try again.");
+
+            }
         }
     }
 
@@ -97,24 +119,32 @@ class Controllers {
         viewTakeProductInfo.firstViewCreateProduct();
         String nameProduct = this.getEcommerce().getScanner().nextLine();
         
-        viewTakeProductInfo.typePriceProduct();
-        double priceProduct = this.getEcommerce().getScanner().nextDouble();
-        this.getEcommerce().getScanner().nextLine();
+        try {
+            viewTakeProductInfo.typePriceProduct();
+            double priceProduct = this.getEcommerce().getScanner().nextDouble();
+            this.getEcommerce().getScanner().nextLine();
 
-        viewTakeProductInfo.typeStockProduct();
-        int stockProduct = this.getEcommerce().getScanner().nextInt();
-        this.getEcommerce().getScanner().nextLine();
-        Product newProduct = new Product(nameProduct, priceProduct, stockProduct);
-        this.getEcommerce().getProductList().add(newProduct);
+            viewTakeProductInfo.typeStockProduct();
+            int stockProduct = this.getEcommerce().getScanner().nextInt();
+            this.getEcommerce().getScanner().nextLine();
+            Product newProduct = new Product(nameProduct, priceProduct, stockProduct);
+            this.getEcommerce().getProductList().add(newProduct);
 
-        viewTakeProductInfo.returnProductInfo(newProduct);
-        this.getEcommerce().getControllers().adminHomeController();
+            viewTakeProductInfo.returnProductInfo(newProduct);
+            this.getEcommerce().getControllers().adminHomeController();
+            return;
+        } catch ( Exception e ) {
+            System.out.println("Invalid choice, must Interger");
+            this.getEcommerce().getControllers().createProduct();
+            return;
+        }
     }
 
     public void historyOrderAdmin(){
         Views.HistoryOrder viewHistory = this.getEcommerce().getViews().new HistoryOrder();
         viewHistory.listOrderAdmin();
         this.getEcommerce().getControllers().adminHomeController();
+        return;
     }
 
 
@@ -190,28 +220,27 @@ class Controllers {
      * choose option see allProduct, user history order, logout
      */
     public void homeController() {
-        this.getEcommerce().getViews().homeIndex();
-        try {
-            int userChoose = this.getEcommerce().getScanner().nextInt();
-            this.getEcommerce().getScanner().nextLine();
+        boolean running = true;
+        while(running) {
+            this.getEcommerce().getViews().homeIndex();
+            String userChoose = this.getEcommerce().getScanner().nextLine();
 
             switch (userChoose) {
-                case 1:
+                case "1":
+                    running=false;
                     this.getEcommerce().getControllers().allProductCustomer();
                     break;
-                case 2:
-                    System.out.println("Order history not implemented yet.");
+                case "2":
+                    running=false;
                     this.getEcommerce().getControllers().historyOrder();
                     break;
-                case 3:
+                case "3":
+                    running=false;
                     this.getEcommerce().getControllers().chooseFirstChoose();
                     break;
                 default:
                     System.out.println("Invalid choice, please try again.");
-            }
-        } catch( Exception e) {
-            System.out.println("Invalid choice, please try again.");
-            this.getEcommerce().getControllers().homeController();
+            }            
         }
     }
 
@@ -219,31 +248,30 @@ class Controllers {
      * Navigation go to Product Detail
      */
     public void allProductCustomer(){
-        this.getEcommerce().getViews().allProductCustomer();
-        this.getEcommerce().getViews().askWantSeeDetail();
-        try {
-            int userChoose = this.getEcommerce().getScanner().nextInt();
-            this.getEcommerce().getScanner().nextLine();            
+        boolean running = true;
+        while(running) {
+            this.getEcommerce().getViews().allProductCustomer();
+            this.getEcommerce().getViews().askWantSeeDetail();
+            String userChoose = this.getEcommerce().getScanner().nextLine();            
             switch (userChoose) {
-                case 1:
-                // see Product detail
-                this.getEcommerce().getControllers().productDetailCustomer();
-                break;
-                case 2:
+                case "1":
+                    // see Product detail
+                    running = false;
+                    this.getEcommerce().getControllers().productDetailCustomer();
+                    break;
+                case "2":
+                    running = false;
                     // go home
                     this.getEcommerce().getControllers().homeController();
-                break;
-                case 3:
+                    break;
+                case "3":
+                    running = false;
                     //logout
                     this.getEcommerce().getControllers().chooseFirstChoose();
-                break;
+                    break;
                 default:
-                    System.out.println("Invalid choice, go back home");
-                    this.getEcommerce().getControllers().homeController();
-            }
-        } catch (Exception e) {
-            System.out.println("Invalid choice or Invalid value, must number, go back home");
-            this.getEcommerce().getControllers().homeController();
+                    System.out.println("Invalid choice, try again!");
+            }            
         }
     }
 
@@ -252,36 +280,44 @@ class Controllers {
      * if have display to buy order
      */
     public void productDetailCustomer(){
-        // this.getEcommerce().getViews().allProductCustomer();
-        Views.ProductCustomerDetail productDetail = this.getEcommerce().getViews().new ProductCustomerDetail();
-        productDetail.askTypeYourId();
-        int productId = this.getEcommerce().getScanner().nextInt();
-        this.getEcommerce().getScanner().nextLine();
+        try {
+            this.getEcommerce().getViews().allProductCustomer();
+            Views.ProductCustomerDetail productDetail = this.getEcommerce().getViews().new ProductCustomerDetail();
+            productDetail.askTypeYourId();
+            int productId = this.getEcommerce().getScanner().nextInt();
+            this.getEcommerce().getScanner().nextLine();
 
-        Optional<Product> foundProduct = this.getEcommerce().getProductList().stream()
-            .filter(product -> product.getId() == productId)
-            .findFirst();
+            Optional<Product> foundProduct = this.getEcommerce().getProductList().stream()
+                .filter(product -> product.getId() == productId)
+                .findFirst();
 
-        if (!foundProduct.isPresent()) {
-            System.out.println("Dont Found This Product");
-            this.getEcommerce().getControllers().allProductCustomer();
-        }
-
-        Product product = foundProduct.get();
-        productDetail.detailDisplayOneProductToOrder(product);
-
-        int customerChose = this.getEcommerce().getScanner().nextInt();
-        this.getEcommerce().getScanner().nextLine();
-        switch(customerChose){
-            case 1:
-                // go order product
-                this.getEcommerce().getControllers().orderProductCustomer(product);
-            case 2:
-                // go back all product
+            if (!foundProduct.isPresent()) {
+                System.out.println("Dont Found This Product");
                 this.getEcommerce().getControllers().allProductCustomer();
-            default:
-                System.out.println("Invalid choice, go back all product.");
-                this.getEcommerce().getControllers().allProductCustomer();
+            }
+
+            Product product = foundProduct.get();
+            productDetail.detailDisplayOneProductToOrder(product);
+
+            boolean running = true;
+            while(running){
+                String customerChose = this.getEcommerce().getScanner().nextLine();
+                switch(customerChose){
+                    case "1":
+                        running = false;
+                        // go order product
+                        this.getEcommerce().getControllers().orderProductCustomer(product);
+                    case "2":
+                        running = false;
+                        // go back all product
+                        this.getEcommerce().getControllers().allProductCustomer();
+                    default:
+                        System.out.println("Invalid choice, try again.");
+                }
+            }            
+        } catch (Exception e) {
+            System.out.println("Invalid choice, try again!");
+            this.getEcommerce().getControllers().productDetailCustomer();
         }
     }
 
@@ -346,6 +382,7 @@ class Controllers {
         User user = foundUser.get();
         historyView.listOrder(user);
 
-        this.getEcommerce().getControllers().homeController();
+        // see detail history detail
+        this.getEcommerce().getCustomerOrderControllers().displayOneOrderToChange();
     }
 }
